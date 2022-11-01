@@ -1,12 +1,13 @@
 package com.food.delivery.ui.widget
 
+import android.util.Log
 import androidx.annotation.FloatRange
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,9 +15,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
@@ -31,22 +34,18 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import androidx.core.os.ConfigurationCompat
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.food.delivery.shared.extensions.placeTextAndIcon
+import com.food.delivery.ui.presentation.cart.CartScreen
 import com.food.delivery.ui.presentation.favorite.FavoriteScreen
 import com.food.delivery.ui.presentation.home.screen.HomeScreen
-import java.util.*
 
-fun NavGraphBuilder.addHomeGraph(
-) {
+fun NavGraphBuilder.addHomeGraph() {
     composable(BottomNavSection.HOME.route) { from ->
         HomeScreen()
     }
@@ -54,9 +53,11 @@ fun NavGraphBuilder.addHomeGraph(
         FavoriteScreen()
     }
     composable(BottomNavSection.CART.route) { from ->
-        FavoriteScreen()
+        CartScreen()
     }
-
+    composable(BottomNavSection.PROFILE.route) { from ->
+        CartScreen()
+    }
 }
 
 enum class BottomNavSection(
@@ -64,26 +65,36 @@ enum class BottomNavSection(
     val icon: ImageVector,
     val route: String
 ) {
-    HOME("Home", Icons.Default.Home, "home/home"),
-    FAVORITE("Favorite", Icons.Default.Favorite, "home/favorite"),
-    CART("Cart", Icons.Default.ShoppingCart, "home/cart"),
+    HOME("Home", Icons.Outlined.Home, "home/home"),
+    FAVORITE("Favorite", Icons.Outlined.Favorite, "home/favorite"),
+    CART("Cart", Icons.Outlined.ShoppingCart, "home/cart"),
+    PROFILE("Profile", Icons.Outlined.Person, "home/profile"),
 }
 
 @Composable
 fun CustomBottomNav(
     tabs: Array<BottomNavSection>,
-    currentRoute: String,
+    currentRoute: String = "home/home",
     navigateToRoute: (String) -> Unit
 ) {
     val routes = remember { tabs.map { it.route } }
     val currentSection = tabs.first { it.route == currentRoute }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+            .height(80.dp)
+            .shadow(8.dp)
+            .background(color = Color.White),
+    ) {
+        Log.d("senoox", currentRoute)
 
-    Box() {
         val springSpec = SpringSpec<Float>(
             // Determined experimentally
-            stiffness = 1f,
+            stiffness = 800f,
             dampingRatio = 0.8f,
         )
+
         BottomNavLayout(
             selectedIndex = currentSection.ordinal,
             itemCount = routes.size,
@@ -91,16 +102,13 @@ fun CustomBottomNav(
             indicator = { BottomNavIndicator() },
             modifier = Modifier.navigationBarsPadding()
         ) {
-            val configuration = LocalConfiguration.current
-            val currentLocale: Locale =
-                ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
             tabs.forEach { section ->
                 val selected = section == currentSection
                 val tint by animateColorAsState(
                     if (selected) {
                         MaterialTheme.colors.primary
                     } else {
-                        MaterialTheme.colors.primary
+                        MaterialTheme.colors.onPrimary
                     }
                 )
 
@@ -121,7 +129,9 @@ fun CustomBottomNav(
                         )
                     },
                     selected = selected,
-                    onSelected = { navigateToRoute(section.route) },
+                    onSelected = {
+                        navigateToRoute(section.route)
+                    },
                     animSpec = springSpec,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -130,7 +140,6 @@ fun CustomBottomNav(
             }
         }
     }
-
 }
 
 @Composable
@@ -157,10 +166,9 @@ fun BottomNavLayout(
         Animatable(0f)
     }
     val targetIndicatorIndex = selectedIndex.toFloat()
-
-    LaunchedEffect(key1 = targetIndicatorIndex, block = {
+    LaunchedEffect(targetIndicatorIndex) {
         indicatorIndex.animateTo(targetIndicatorIndex, animationSpec)
-    })
+    }
 
     Layout(
         modifier = modifier.height(56.dp),
@@ -170,6 +178,7 @@ fun BottomNavLayout(
         }
     ) { measurables, constraints ->
         check(itemCount == (measurables.size - 1))
+
         val unselectedWidth = constraints.maxWidth / (itemCount + 1)
         val selectedWidth = 2 * unselectedWidth
         val indicatorMeasurable = measurables.first { it.layoutId == "indicator" }
@@ -201,9 +210,9 @@ fun BottomNavLayout(
             val indicatorLeft = indicatorIndex.value * unselectedWidth
             indicatorPlaceable.placeRelative(x = indicatorLeft.toInt(), y = 0)
             var x = 0
-            itemPlaceAble.forEach {
-                it.placeRelative(x = x, y = 0)
-                x += it.width
+            itemPlaceAble.forEach { placeable ->
+                placeable.placeRelative(x = x, y = 0)
+                x += placeable.width
             }
         }
     }
@@ -219,8 +228,10 @@ fun BottomNavigationItem(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.selectable(selected = selected, onClick = onSelected),
-        contentAlignment = Alignment.Center
+        modifier = modifier
+            .clip(RoundedCornerShape(15.dp))
+            .selectable(selected = selected, onClick = onSelected),
+        contentAlignment = Alignment.Center,
     ) {
         val animationProgress by animateFloatAsState(if (selected) 1f else 0f, animSpec)
         BottomNavigationItemLayout(
@@ -234,14 +245,17 @@ fun BottomNavigationItem(
 @Composable
 private fun BottomNavIndicator(
     strokeWidth: Dp = 1.dp,
-    color: Color = MaterialTheme.colors.onPrimary,
+    color: Color = MaterialTheme.colors.primary,
     shape: Shape = RoundedCornerShape(percent = 50)
 ) {
     Spacer(
         modifier = Modifier
+            .padding(top = 5.dp, bottom = 5.dp, start = 12.dp, end = 12.dp)
             .fillMaxSize()
-            .then(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
-            .border(strokeWidth, color, shape)
+            .clip(RoundedCornerShape(100.dp))
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = MaterialTheme.colors.secondary)
     )
 }
 
@@ -289,9 +303,9 @@ fun BottomNavigationItemLayout(
 @Preview
 @Composable
 private fun BottomNavPreview() {
-        CustomBottomNav(
-            tabs = BottomNavSection.values(),
-            currentRoute = BottomNavSection.HOME.route,
-            navigateToRoute = { }
-        )
+    CustomBottomNav(
+        tabs = BottomNavSection.values(),
+        currentRoute = BottomNavSection.HOME.route,
+        navigateToRoute = { }
+    )
 }
