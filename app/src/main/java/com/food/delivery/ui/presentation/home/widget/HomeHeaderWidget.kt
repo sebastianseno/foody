@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.food.delivery.R
-import com.food.delivery.ui.widget.DrawableWrapper
+import com.food.delivery.shared.modifier.DrawableWrapper
 
 @Preview(name = "Light Mode", showSystemUi = false, showBackground = true)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED, showBackground = true)

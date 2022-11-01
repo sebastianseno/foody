@@ -1,4 +1,4 @@
-package com.food.delivery.ui.widget
+package com.food.delivery.shared.modifier
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
