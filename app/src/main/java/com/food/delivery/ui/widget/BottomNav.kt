@@ -82,19 +82,16 @@ fun CustomBottomNav(
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
             .height(80.dp)
             .shadow(8.dp)
             .background(color = Color.White),
     ) {
-        Log.d("senoox", currentRoute)
-
         val springSpec = SpringSpec<Float>(
             // Determined experimentally
             stiffness = 800f,
             dampingRatio = 0.8f,
         )
-
         BottomNavLayout(
             selectedIndex = currentSection.ordinal,
             itemCount = routes.size,
@@ -243,14 +240,10 @@ fun BottomNavigationItem(
 }
 
 @Composable
-private fun BottomNavIndicator(
-    strokeWidth: Dp = 1.dp,
-    color: Color = MaterialTheme.colors.primary,
-    shape: Shape = RoundedCornerShape(percent = 50)
-) {
+private fun BottomNavIndicator() {
     Spacer(
         modifier = Modifier
-            .padding(top = 5.dp, bottom = 5.dp, start = 12.dp, end = 12.dp)
+            .padding(top = 5.dp, bottom = 5.dp, start = 20.dp, end = 20.dp)
             .fillMaxSize()
             .clip(RoundedCornerShape(100.dp))
             .fillMaxWidth()
