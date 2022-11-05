@@ -82,7 +82,7 @@ fun CustomBottomNav(
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
             .height(80.dp)
             .shadow(8.dp)
             .background(color = Color.White),

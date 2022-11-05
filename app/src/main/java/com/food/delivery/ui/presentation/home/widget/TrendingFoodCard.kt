@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -36,7 +38,7 @@ fun TrendingFoodCard() {
                     .background(Color.White)
                     .padding(15.dp),
             ) {
-                val (space, title, duration, rate, price, checkout) = createRefs()
+                val (space, title, duration, rating, price, checkout) = createRefs()
                 Spacer(modifier = Modifier
                     .height(50.dp)
                     .constrainAs(space) {
@@ -55,7 +57,7 @@ fun TrendingFoodCard() {
                         }
                 )
                 Text(
-                    text = "24min",
+                    text = "15min • ",
                     color = Gray,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
@@ -65,6 +67,14 @@ fun TrendingFoodCard() {
                             top.linkTo(title.bottom)
                             start.linkTo(title.start)
                         }
+                )
+                Rating(
+                    modifier = Modifier
+                        .constrainAs(rating) {
+                            top.linkTo(title.bottom)
+                            start.linkTo(duration.end)
+                    },
+                    rating = "5.0"
                 )
                 Text(
                     text = "$14.99",
@@ -79,10 +89,10 @@ fun TrendingFoodCard() {
                 )
                 Box(
                     modifier = Modifier
-                        .width(42.dp)
-                        .height(42.dp)
+                        .width(32.dp)
+                        .height(32.dp)
                         .blur(0.dp)
-                        .clip(RoundedCornerShape(15.dp))
+                        .clip(RoundedCornerShape(10.dp))
                         .background(color = MaterialTheme.colors.primary)
                         .padding(all = 0.dp)
                         .constrainAs(checkout) {
@@ -91,13 +101,15 @@ fun TrendingFoodCard() {
                             end.linkTo(parent.end)
                         }
                         .clickable {
-                            Log.d("senpp", "okk")
+
                         },
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_cart),
                         contentDescription = "notification",
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center)
                     )
                 }
             }

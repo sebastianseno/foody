@@ -15,10 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.food.delivery.R
-import com.food.delivery.ui.presentation.home.widget.FoodCategoryCard
-import com.food.delivery.ui.presentation.home.widget.HomeHeaderWidget
-import com.food.delivery.ui.presentation.home.widget.SearchAndFilterWidget
-import com.food.delivery.ui.presentation.home.widget.TrendingFoodCard
+import com.food.delivery.ui.presentation.home.widget.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -29,7 +26,7 @@ fun HomeScreen() {
     )
     Column(
         Modifier
-            .padding(all = 35.dp)
+            .padding(all = 18.dp)
             .verticalScroll(ScrollState(0))
     ) {
         HomeHeaderWidget()
@@ -76,5 +73,15 @@ fun HomeScreen() {
             TrendingFoodCard()
             TrendingFoodCard()
         }
+        Text(
+            text = "Restaurants Near You",
+            color = Color.Black,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(vertical = 26.dp)
+        )
+        RestaurantCard()
+        Spacer(modifier = Modifier.height(150.dp))
     }
 }
