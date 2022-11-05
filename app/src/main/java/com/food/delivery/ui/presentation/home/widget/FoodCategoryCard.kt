@@ -26,6 +26,7 @@ import com.food.delivery.ui.theme.SoftOrange
 fun FoodCategoryCard() {
     Box(
         Modifier
+            .padding(end = 10.dp)
             .width(141.dp)
             .height(53.dp)
             .clip(RoundedCornerShape(15.dp))
@@ -41,7 +42,7 @@ fun FoodCategoryCard() {
             fontSize = 15.sp,
             color = OrangePrimary,
             modifier = Modifier
-                .padding(start = 5.dp)
+                .padding(start = 9.dp)
                 .align(Alignment.CenterStart)
         )
     }

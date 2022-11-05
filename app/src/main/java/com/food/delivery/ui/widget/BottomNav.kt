@@ -173,13 +173,13 @@ fun BottomNavLayout(
             content()
             Box(modifier = Modifier.layoutId("indicator"), content = indicator)
         }
-    ) { measurables, constraints ->
-        check(itemCount == (measurables.size - 1))
+    ) { measures, constraints ->
+        check(itemCount == (measures.size - 1))
 
         val unselectedWidth = constraints.maxWidth / (itemCount + 1)
         val selectedWidth = 2 * unselectedWidth
-        val indicatorMeasurable = measurables.first { it.layoutId == "indicator" }
-        val itemPlaceAble = measurables
+        val indicatorMeasurable = measures.first { it.layoutId == "indicator" }
+        val itemPlaceAble = measures
             .filterNot { it == indicatorMeasurable }
             .mapIndexed { index, measurable ->
                 val width = lerp(

@@ -3,6 +3,7 @@ package com.food.delivery.ui.presentation.home.widget
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -54,6 +55,9 @@ fun HomeHeaderWidget() {
                 .clip(RoundedCornerShape(15.dp))
                 .background(color = MaterialTheme.colors.secondary)
                 .padding(all = 0.dp)
+                .clickable {
+
+                }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_bell),
