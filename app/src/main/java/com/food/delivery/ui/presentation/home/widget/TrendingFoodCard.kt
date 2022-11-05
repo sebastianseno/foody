@@ -1,12 +1,9 @@
 package com.food.delivery.ui.presentation.home.widget
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -28,15 +25,25 @@ import com.food.delivery.ui.theme.FoodDeliveryTheme
 import com.food.delivery.ui.theme.Gray
 
 @Composable
-fun TrendingFoodCard() {
-    Box(modifier = Modifier.padding(end = 12.dp)) {
+fun TrendingFoodCard(
+    onClick: () -> Unit = {}
+) {
+    Box(modifier = Modifier
+        .padding(end = 12.dp)
+
+    ) {
         Box(modifier = Modifier.height(260.dp)) {
             ConstraintLayout(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .clip(RoundedCornerShape(12.dp))
                     .background(Color.White)
-                    .padding(15.dp),
+                    .padding(15.dp)
+                    .clickable {
+                        onClick()
+
+                    }
+                ,
             ) {
                 val (space, title, duration, rating, price, checkout) = createRefs()
                 Spacer(modifier = Modifier
@@ -121,6 +128,9 @@ fun TrendingFoodCard() {
                 .align(Alignment.TopCenter)
                 .width(144.dp)
                 .height(144.dp)
+                .clickable {
+                    onClick()
+                }
         )
     }
 }

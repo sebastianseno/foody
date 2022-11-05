@@ -18,7 +18,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val appState = rememberAppState()
-            Log.d("senooo9", appState.currentRoute.toString())
             FoodDeliveryTheme {
                 Scaffold(
                     backgroundColor = MaterialTheme.colors.background,
@@ -36,7 +35,7 @@ class MainActivity : ComponentActivity() {
                             navController = appState.navController,
                             startDestination = BottomNavSection.HOME.route,
                         ) {
-                            addHomeGraph()
+                            addHomeGraph(appState.navController)
                         }
                     }
                 )

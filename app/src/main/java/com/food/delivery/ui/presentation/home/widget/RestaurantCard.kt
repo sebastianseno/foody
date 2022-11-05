@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.food.delivery.R
 import com.food.delivery.ui.theme.Gray
+import com.food.delivery.ui.widget.CircularButton
 
 @Composable
 @Preview("Card")
@@ -46,7 +47,15 @@ fun RestaurantCard() {
                     top.linkTo(parent.top)
                 }
         )
-
+        CircularButton(
+            modifier = Modifier
+                .padding(end = 5.dp, top = 5.dp)
+                .constrainAs(favorite) {
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                },
+            icon = painterResource(id = R.drawable.ic_heart)
+        )
         Text(
             text = "Cream Chicken",
             color = Color.Black,

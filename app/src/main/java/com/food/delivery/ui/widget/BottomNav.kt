@@ -1,6 +1,5 @@
 package com.food.delivery.ui.widget
 
-import android.util.Log
 import androidx.annotation.FloatRange
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -28,26 +27,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.food.delivery.shared.extensions.placeTextAndIcon
 import com.food.delivery.ui.presentation.cart.CartScreen
 import com.food.delivery.ui.presentation.favorite.FavoriteScreen
+import com.food.delivery.ui.presentation.home.screen.FoodDetailScreen
 import com.food.delivery.ui.presentation.home.screen.HomeScreen
 
-fun NavGraphBuilder.addHomeGraph() {
+fun NavGraphBuilder.addHomeGraph(navController: NavController) {
     composable(BottomNavSection.HOME.route) { from ->
-        HomeScreen()
+        HomeScreen(navController)
     }
     composable(BottomNavSection.FAVORITE.route) { from ->
         FavoriteScreen()
@@ -57,6 +56,11 @@ fun NavGraphBuilder.addHomeGraph() {
     }
     composable(BottomNavSection.PROFILE.route) { from ->
         CartScreen()
+    }
+    composable(
+        route = "detail-screen",
+    ) { from ->
+        FoodDetailScreen()
     }
 }
 

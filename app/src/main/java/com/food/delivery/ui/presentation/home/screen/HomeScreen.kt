@@ -14,12 +14,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.food.delivery.R
 import com.food.delivery.ui.presentation.home.widget.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colors.background
@@ -45,10 +48,10 @@ fun HomeScreen() {
                 )
 
         ) {
-           FoodCategoryCard()
-           FoodCategoryCard()
-           FoodCategoryCard()
-           FoodCategoryCard()
+            FoodCategoryCard()
+            FoodCategoryCard()
+            FoodCategoryCard()
+            FoodCategoryCard()
         }
         Text(
             text = "Trending Now",
@@ -66,7 +69,11 @@ fun HomeScreen() {
                 )
 
         ) {
-            TrendingFoodCard()
+            TrendingFoodCard(
+                onClick = {
+                    navController.navigate("detail-screen")
+                }
+            )
             TrendingFoodCard()
             TrendingFoodCard()
             TrendingFoodCard()
@@ -82,6 +89,6 @@ fun HomeScreen() {
                 .padding(vertical = 26.dp)
         )
         RestaurantCard()
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(80.dp))
     }
 }
