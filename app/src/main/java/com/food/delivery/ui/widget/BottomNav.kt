@@ -41,12 +41,14 @@ import androidx.navigation.compose.composable
 import com.food.delivery.shared.extensions.placeTextAndIcon
 import com.food.delivery.ui.presentation.cart.CartScreen
 import com.food.delivery.ui.presentation.favorite.FavoriteScreen
-import com.food.delivery.ui.presentation.home.screen.FoodDetailScreen
+import com.food.delivery.ui.presentation.fooddetail.screen.FoodDetailScreen
 import com.food.delivery.ui.presentation.home.screen.HomeScreen
 
-fun NavGraphBuilder.addHomeGraph(navController: NavController) {
+fun NavGraphBuilder.addHomeGraph(
+    navController: NavController
+) {
     composable(BottomNavSection.HOME.route) { from ->
-        HomeScreen(navController)
+        HomeScreen(navController, from)
     }
     composable(BottomNavSection.FAVORITE.route) { from ->
         FavoriteScreen()
@@ -59,7 +61,7 @@ fun NavGraphBuilder.addHomeGraph(navController: NavController) {
     }
     composable(
         route = "detail-screen",
-    ) { from ->
+    ) {
         FoodDetailScreen()
     }
 }

@@ -1,5 +1,6 @@
 package com.food.delivery.ui.presentation.home.screen
 
+import android.widget.Spinner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
@@ -14,14 +15,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.food.delivery.R
+import com.food.delivery.lifecycleIsResumed
 import com.food.delivery.ui.presentation.home.widget.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
+    from: NavBackStackEntry
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
@@ -35,6 +39,7 @@ fun HomeScreen(
         HomeHeaderWidget()
         Spacer(modifier = Modifier.height(48.dp))
         SearchAndFilterWidget()
+        
         Image(
             painter = painterResource(id = R.drawable.img_sample_promo_header),
             contentDescription = "header",
@@ -71,7 +76,9 @@ fun HomeScreen(
         ) {
             TrendingFoodCard(
                 onClick = {
-                    navController.navigate("detail-screen")
+                    if (from.lifecycleIsResumed()) {
+                        navController.navigate("detail-screen")
+                    }
                 }
             )
             TrendingFoodCard()
